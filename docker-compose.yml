@@ -1,7 +1,7 @@
 version: "3.2"
 services:
   web:
-    image: nissimacheroff/todo-fe:latest
+    image: inewthinker/todo-fe:latest
     depends_on:
       - api
     ports:
@@ -9,7 +9,7 @@ services:
     networks:
       - network-backend
   api:
-    image: nissimacheroff/todo-be:latest
+    image: inewthinker/todo-fe:latest
     depends_on:
       - mongo
     ports:
