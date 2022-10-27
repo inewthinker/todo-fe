@@ -9,12 +9,12 @@ pipeline {
         }
         stage('Test stage') {
             steps {
-                 sh 'DOCKER_BUILDKIT=1 docker build -f docker-pipeline -t inewthinker/todo-fe:latest --target test .'
+              sh 'DOCKER_BUILDKIT=1 docker build -f docker-pipeline -t inewthinker/todo-fe:latest --target test .'
             }
         }
         stage('Delivery stage') {
             steps {
-                sh 'DOCKER_BUILDKIT=1 docker build -f docker-pipeline -t inewthinker/todo-fe:latest --target delivery .'
+              sh 'DOCKER_BUILDKIT=1 docker build -f docker-pipeline -t inewthinker/todo-fe:latest --target delivery .'
             }
         }
        
