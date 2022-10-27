@@ -6,7 +6,7 @@ pipeline {
             steps {
                 sh '''
                     echo "-----Running build stage npm install-----"
-                    DOCKER_BUILDKIT=1 docker build -f dockerfile-pipeline -t inewthinker/todo-fe --target builder .
+                    DOCKER_BUILDKIT=1 docker build -f docker-pipeline -t inewthinker/todo-fe --target builder .
                 '''
             }
         }
@@ -14,7 +14,7 @@ pipeline {
             steps {
                 sh '''
                     echo "-----Running test stage npm test-----"
-                    DOCKER_BUILDKIT=1 docker build -f dockerfile-pipeline -t inewthinker/todo-fe --target test .
+                    DOCKER_BUILDKIT=1 docker build -f docker-pipeline -t inewthinker/todo-fe --target test .
                 '''
             }
         }
@@ -22,7 +22,7 @@ pipeline {
             steps {
                 sh '''
                     echo "-----Running delivery stage npm start-----"
-                    DOCKER_BUILDKIT=1 docker build -f dockerfile-pipeline -t inewthinker/todo-fe --target delivery .
+                    DOCKER_BUILDKIT=1 docker build -f docker-pipeline -t inewthinker/todo-fe --target delivery .
                 '''
             }
         }
