@@ -9,7 +9,7 @@ services:
     networks:
       - network-backend
   api:
-    image: inewthinker/todo-fe:latest
+    image: inewthinker/todo-be:latest
     depends_on:
       - mongo
     ports:
