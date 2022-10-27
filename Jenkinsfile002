@@ -1,0 +1,58 @@
+pipeline {
+    agent any
+
+    stages {
+        stage('build') {
+            steps {
+                sh '''
+                    echo "-----Running build stage npm install-----"
+                    DOCKER_BUILDKIT=1 docker build -f dockerfile-pipeline -t inewthinker/todo-fe --target builder .
+                '''
+            }
+        }
+        stage('test') {
+            steps {
+                sh '''
+                    echo "-----Running test stage npm test-----"
+                    DOCKER_BUILDKIT=1 docker build -f dockerfile-pipeline -t inewthinker/todo-fe --target test .
+                '''
+            }
+        }
+        stage('start') {
+            steps {
+                sh '''
+                    echo "-----Running delivery stage npm start-----"
+                    DOCKER_BUILDKIT=1 docker build -f dockerfile-pipeline -t inewthinker/todo-fe --target delivery .
+                '''
+            }
+        }
+        stage('run') {
+            steps {
+                sh '''
+                    echo "-----Running the docker container-----"
+                    docker run -d inewthinker/todo-fe
+                '''
+            }
+        }
+        stage('push-image-to-repo') {
+            steps {
+                sh (script:"set +x && docker login -u ${username} -p ${pass} && set -x")
+                sh '''
+                    echo "-----Pushing docker image to repo-----"
+                    docker tag inewthinker/todo-fe inewthinker/todo-fe:jenkins-${BUILD_NUMBER}
+                    
+                    docker push inewthinker/todo-fe --all-tags
+                    
+                '''
+            }
+        }
+        stage('cleanup') {
+            steps {
+                sh '''
+                    echo "-----Running docker prune-----"
+                    docker system prune -f
+                '''
+            }
+        }
+    }
+}
