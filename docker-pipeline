@@ -9,7 +9,7 @@ RUN npm install
 
 #TESTING STAGE:
 
-FROM node:14-alpine as testing
+FROM node:14-alpine as test
 WORKDIR /app
 ENV PATH /app/node_modules/.bin:$PATH
 COPY --from=builder /app/node_modules/ ./node_modules/
