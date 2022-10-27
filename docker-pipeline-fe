@@ -1,0 +1,44 @@
+#BUILD STAGE:
+
+FROM node:14-alpine as builder
+
+WORKDIR /app
+
+ENV PATH /app/node_modules/.bin:$PATH
+
+COPY package*.json ./
+
+RUN npm install
+
+
+#TESTING STAGE:
+
+FROM node:14-alpine as testing
+
+WORKDIR /app
+
+ENV PATH /app/node_modules/.bin:$PATH
+
+COPY --from=builder /app/node_modules/ ./node_modules/
+
+COPY . .
+
+ENV CI=true
+
+RUN npm test || true
+
+#IMAGE TO CREATE : YOURREPO/todo-fe:jenkins-JENKINSBUILDNUMBER
+
+#Ex: yanivomc/todo-fe:jenkins-4 & ALSO TAG IT AS LATEST
+#yanivomc/todo-fe:latest
+
+
+#DELIVERY ARTIFACT STAGE:
+
+FROM node:14-alpine as delivery
+WORKDIR /app
+ENV PATH /app/node_modules/.bin:$PATH
+COPY --from=builder /app/node_modules/ ./node_modules/
+COPY . .
+CMD ["npm", "start"]
+
