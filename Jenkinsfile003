@@ -1,0 +1,29 @@
+pipeline {
+    agent any
+
+    stages {
+        stage('Build stage') {
+            steps {
+              sh 'DOCKER_BUILDKIT=1 docker build -f docker-pipeline -t image-builder --target builder .'
+            }
+        }
+        stage('Test stage') {
+            steps {
+              sh 'DOCKER_BUILDKIT=1 docker build -f docker-pipeline -t image-testing --target test .'
+            }
+        }
+        stage('Delivery stage') {
+            steps {
+                sh 'DOCKER_BUILDKIT=1 docker build -f docker-pipeline -t inewthinker/todo-fe:$BUILD_NUMBER --target delivery .'
+            }
+        }
+        stage('push') {
+            steps {
+                withCredentials([string(credentialsId: 'dockerhub-pwd', variable: 'docker-pwd')]) {
+                    sh "docker login -u inewthinker -p  ${docker-pwd}"
+                }
+                    sh "docker push inewthinker/todo-fe:latest"
+        }
+    }
+}
+}
