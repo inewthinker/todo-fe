@@ -1,7 +1,7 @@
 version: "3.2"
 services:
   web:
-    image: inewthinker/todo-fe:latest
+    image: inewthinker/todo-fe:jenkins-2
     depends_on:
       - api
     ports:
@@ -9,7 +9,7 @@ services:
     networks:
       - network-backend
   api:
-    image: inewthinker/todo-be:latest
+    image: inewthinker/todo-fe:jenkins-2
     depends_on:
       - mongo
     ports:
