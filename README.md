@@ -11,7 +11,7 @@ stage('PUSH STAGE') {
         docker login -u ${username} -p ${password}
         docker push [yourRepo/todo-fe] --all-tags
        '''
-}
+     }
 or
 
  environment{
