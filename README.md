@@ -2,7 +2,9 @@
 Devops Seminar Final project
 Steps:
 •	run the Docker-pipeline via Jenkins to make sure all stages are working properly.
+
 o	the push stage is absent from Jenkinsfile so has to be done manually or add the following:
+
 o	stage('PUSH STAGE') {
 o	 steps {
 o	     sh '''
